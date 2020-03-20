@@ -1,11 +1,10 @@
 \documentclass[14pt,a4paper]{extreport}
 \usepackage[utf8]{inputenc}
-%\usepackage[english,russian]{babel}
 %\usepackage{indentfirst}
-
 \usepackage{BSUStyle}
 %\usepackage{refcheck}
-
+\usepackage{graphics}
+\newcommand{\RNumb}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 
 \begin{document}
 
@@ -21,10 +20,10 @@
         специальность 1-31 03 06 «Экономическая кибернетика»}
 
 % для дипломов
-% \supervisor{канд. физ.-мат. наук \\ доцент Н.М. Дмитрук}
+\supervisor{канд. физ.-мат. наук \\ доцент Н.М. Дмитрук}
 
 % для магистерских
-\supervisor{Наталия Михайловна Дмитрук \\ канд. физ.-мат. наук, доцент}
+%\supervisor{Наталия Михайловна Дмитрук \\ канд. физ.-мат. наук, доцент}
 
 \BSUtitle
 
@@ -32,5 +31,7 @@
 \tableofcontents
 
 \input{chapter1}
+
+\input{bibliograhy}
 
 \end{document}
