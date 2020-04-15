@@ -12,10 +12,10 @@
 \usetikzlibrary{positioning}
 
 \RequirePackage{geometry}
-\geometry{left=3cm}               % Р»РµРІРѕРµ РїРѕР»Рµ
-\geometry{right=1cm}              % РїСЂР°РІРѕРµ РїРѕР»Рµ
-\geometry{top=2cm}                % РІРµСЂС…РЅРµРµ РїРѕР»Рµ
-\geometry{bottom=2cm}             % РЅРёР¶РЅРµРµ РїРѕР»Рµ
+\geometry{left=3cm}               % левое поле
+\geometry{right=1cm}              % правое поле
+\geometry{top=2cm}                % верхнее поле
+\geometry{bottom=2cm}             % нижнее поле
 
 \parindent=10mm
 \sloppy
@@ -23,51 +23,51 @@
 \numberwithin{equation}{chapter}
 
 \RequirePackage{setspace}
-\setstretch{1.1} % СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РёРЅС‚РµСЂРІР°Р». 1.5 РґР°РµС‚ РїРѕР»СѓС‚РѕСЂРЅС‹Р№
+\setstretch{1.1} % устанавливает интервал. 1.5 дает полуторный
 %\baselineskip=18pt
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% РўР•РћР Р•РњР« РРўР”
+% ТЕОРЕМЫ ИТД
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newtheorem{theorem}{РўРµРѕСЂРµРјР°}[chapter]
-\newtheorem{corollary}{РЎР»РµРґСЃС‚РІРёРµ}[chapter]
-\newtheorem{lemma}{Р›РµРјРјР°}[chapter]
-\newtheorem{proposition}{РЈС‚РІРµСЂР¶РґРµРЅРёРµ}[chapter]
-\newtheorem{remark}{Р—Р°РјРµС‡Р°РЅРёРµ}[chapter]
-\newtheorem{assumption}{РџСЂРµРґРїРѕР»РѕР¶РµРЅРёРµ}[chapter]
-\newtheorem{example}{РџСЂРёРјРµСЂ}[chapter]
-\newtheorem{definition}{РћРїСЂРµРґРµР»РµРЅРёРµ}[chapter]
+\newtheorem{theorem}{Теорема}[chapter]
+\newtheorem{corollary}{Следствие}[chapter]
+\newtheorem{lemma}{Лемма}[chapter]
+\newtheorem{proposition}{Утверждение}[chapter]
+\newtheorem{remark}{Замечание}[chapter]
+\newtheorem{assumption}{Предположение}[chapter]
+\newtheorem{example}{Пример}[chapter]
+\newtheorem{definition}{Определение}[chapter]
 
-\newcommand{\proof}{\par\mbox{Р”РѕРєР°Р·Р°С‚РµР»СЊСЃС‚РІРѕ.}\hspace{2mm}}
-\newcommand{\proofnp}{\par\mbox{Р”РѕРєР°Р·Р°С‚РµР»СЊСЃС‚РІРѕ}\hspace{2mm}}
+\newcommand{\proof}{\par\mbox{Доказательство.}\hspace{2mm}}
+\newcommand{\proofnp}{\par\mbox{Доказательство}\hspace{2mm}}
 
 \def\@begintheorem#1#2{\trivlist \item[\hskip \labelsep {\hspace*{\parindent} \bf #1\ #2}]}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Р РРЎРЈРќРљР
+% РИСУНКИ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcounter{figcount}[chapter]
 \renewcommand{\thefigcount}{\arabic{chapter}.\arabic{figcount}}
 \newcommand{\dfig}[1]%
-{\refstepcounter{figcount}\rm Р РёСЃСѓРЅРѕРє \thefigcount \ --- \  #1}
+{\refstepcounter{figcount}\rm Рисунок \thefigcount \ --- \  #1}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% РЎРўР РЈРљРўРЈР РќР«Р• Р§РђРЎРўР
+% СТРУКТУРНЫЕ ЧАСТИ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{titlesec}
 
 \newcommand{\chapterbreak}{\clearpage}
 
-\titleformat{\chapter}[display]{\bfseries\large\centering}{Р“Р›РђР’Рђ \ \thechapter}{0.5em}
+\titleformat{\chapter}[display]{\bfseries\large\centering}{ГЛАВА \ \thechapter}{0.5em}
 {\uppercase}
 
-\titleformat*{\section}{\large\bfseries}     % * -- РєСЂР°С‚РєР°СЏ РІРµСЂСЃРёСЏ \titleformat
+\titleformat*{\section}{\large\bfseries}     % * -- краткая версия \titleformat
 \titleformat*{\subsection}{\normalsize\bfseries}
 
 
@@ -77,16 +77,16 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  РЎРћР”Р•Р Р–РђРќРР•
+%  СОДЕРЖАНИЕ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\addto\captionsrussian{\def\contentsname{\centerline{РћР“Р›РђР’Р›Р•РќРР•\vspace{-2em}}}}
+\addto\captionsrussian{\def\contentsname{\centerline{ОГЛАВЛЕНИЕ\vspace{-2em}}}}
 \setcounter{tocdepth}{1}
 
 \RequirePackage{titletoc}
 
-\titlecontents{chapter}[0pt]{\vspace{1em}}{\bfseries Р“Р›РђР’Рђ \contentslabel{0em} \hspace*{0.5em}}
+\titlecontents{chapter}[0pt]{\vspace{1em}}{\bfseries ГЛАВА \contentslabel{0em} \hspace*{0.5em}}
 {\bfseries}{\titlerule*[1pc]{.}\contentspage}
 
 
@@ -95,21 +95,21 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  Р›РРўР•Р РђРўРЈР Рђ
+%  ЛИТЕРАТУРА
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\@biblabel#1{#1}
-\addto\captionsrussian{\def\bibname{\centerline{РЎРџРРЎРћРљ РРЎРџРћР›Р¬Р—РћР’РђРќРќРћР™ Р›РРўР•Р РђРўРЈР Р« \vspace{-1em}}}}
+\addto\captionsrussian{\def\bibname{\centerline{СПИСОК ИСПОЛЬЗОВАННОЙ ЛИТЕРАТУРЫ \vspace{-1em}}}}
 
 \newenvironment{biblio}{
         \newpage
-        \addcontentsline{toc}{chapter}{РЎРџРРЎРћРљ РРЎРџРћР›Р¬Р—РћР’РђРќРќРћР™ Р›РРўР•Р РђРўРЈР Р«}
+        \addcontentsline{toc}{chapter}{СПИСОК ИСПОЛЬЗОВАННОЙ ЛИТЕРАТУРЫ}
         \begin{thebibliography}{99}
-                  \itemindent=15mm \itemsep=-4pt} % РґР»СЏ РѕС„РѕСЂРјР»РµРЅРёСЏ РїРѕ Р“РћРЎРў}
+                  \itemindent=15mm \itemsep=-4pt} % для оформления по ГОСТ}
         {\end{thebibliography}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  РњРђРўР•РњРђРўРР§Р•РЎРљРР•
+%  МАТЕМАТИЧЕСКИЕ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\rank}{\mathop{\rm rank}\nolimits}
@@ -119,7 +119,7 @@
 \newcommand{\sign}{\mathop{\rm sign}\nolimits}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  РўРРўРЈР›Р¬РќР«Р™ Р›РРЎРў
+%  ТИТУЛЬНЫЙ ЛИСТ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -133,10 +133,10 @@
 \baselineskip 1.7em
 
     \begin{center}
-        \textbf{\hspace{-3mm}РњРРќРРЎРўР•Р РЎРўР’Рћ РћР‘Р РђР—РћР’РђРќРРЇ Р Р•РЎРџРЈР‘Р›РРљР Р‘Р•Р›РђР РЈРЎР¬ \\
-        Р‘Р•Р›РћР РЈРЎРЎРљРР™ Р“РћРЎРЈР”РђР РЎРўР’Р•РќРќР«Р™ РЈРќРР’Р•Р РЎРРўР•Рў\\
-        Р¤РђРљРЈР›Р¬РўР•Рў РџР РРљР›РђР”РќРћР™ РњРђРўР•РњРђРўРРљР Р РРќР¤РћР РњРђРўРРљР \\
-        РљР°С„РµРґСЂР° РјРµС‚РѕРґРѕРІ РѕРїС‚РёРјР°Р»СЊРЅРѕРіРѕ СѓРїСЂР°РІР»РµРЅРёСЏ} \\
+        \textbf{\hspace{-3mm}МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ \\
+        БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ\\
+        ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ \\
+        Кафедра методов оптимального управления} \\
 
         \vfill
 
@@ -156,21 +156,21 @@
 
 
 {\hspace*{8cm}\begin{minipage}[t]{0.5\textwidth}
-РќР°СѓС‡РЅС‹Р№ СЂСѓРєРѕРІРѕРґРёС‚РµР»СЊ \\ \@supervisor
+Научный руководитель \\ \@supervisor
 \end{minipage}}
 
 
 \vspace {1 cm}
 
 \noindent\begin{minipage}[t]{0.7\textwidth}
-Р”РѕРїСѓС‰РµРЅР° Рє Р·Р°С‰РёС‚Рµ \\ \vskip 0.1em
-<<\rule{1 cm}{0,2 pt}>> \rule{4 cm}{0,2 pt} {\the\year \ Рі.}  \\
-Р—Р°РІ. РєР°С„РµРґСЂРѕР№ РјРµС‚РѕРґРѕРІ РѕРїС‚РёРјР°Р»СЊРЅРѕРіРѕ СѓРїСЂР°РІР»РµРЅРёСЏ \\
-РєР°РЅРґ. С„РёР·.-РјР°С‚. РЅР°СѓРє, РґРѕС†РµРЅС‚ Рќ.Рњ. Р”РјРёС‚СЂСѓРє
+Допущена к защите \\ \vskip 0.1em
+<<\rule{1 cm}{0,2 pt}>> \rule{4 cm}{0,2 pt} {\the\year \ г.}  \\
+Зав. кафедрой методов оптимального управления \\
+канд. физ.-мат. наук, доцент Н.М. Дмитрук
 \end{minipage}
 \vfill
 
-\centerline{РњРёРЅСЃРє \the\year}
+\centerline{Минск \the\year}
 \end{titlepage}
 \setcounter{page}{2}
 }
@@ -181,10 +181,10 @@
 \baselineskip 1.7em
 
     \begin{center}
-        \textbf{\hspace{-3mm}РњРРќРРЎРўР•Р РЎРўР’Рћ РћР‘Р РђР—РћР’РђРќРРЇ Р Р•РЎРџРЈР‘Р›РРљР Р‘Р•Р›РђР РЈРЎР¬ \\
-        Р‘Р•Р›РћР РЈРЎРЎРљРР™ Р“РћРЎРЈР”РђР РЎРўР’Р•РќРќР«Р™ РЈРќРР’Р•Р РЎРРўР•Рў\\
-        Р¤РђРљРЈР›Р¬РўР•Рў РџР РРљР›РђР”РќРћР™ РњРђРўР•РњРђРўРРљР Р РРќР¤РћР РњРђРўРРљР \\
-        РљР°С„РµРґСЂР° РјРµС‚РѕРґРѕРІ РѕРїС‚РёРјР°Р»СЊРЅРѕРіРѕ СѓРїСЂР°РІР»РµРЅРёСЏ} \\
+        \textbf{\hspace{-3mm}МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ \\
+        БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ\\
+        ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ \\
+        Кафедра методов оптимального управления} \\
 
         \vfill
 
@@ -204,19 +204,19 @@
 
 {\hspace*{8cm}\begin{minipage}[t]{9cm}
 \@author \\
-СЃС‚СѓРґРµРЅС‚Р° 3 РєСѓСЂСЃР°,\\
-СЃРїРµС†РёР°Р»СЊРЅРѕСЃС‚СЊ <<\@spec>>
+студента 3 курса,\\
+специальность <<\@spec>>
 
 \vspace{1cm}
 
-РќР°СѓС‡РЅС‹Р№ СЂСѓРєРѕРІРѕРґРёС‚РµР»СЊ: \\ \@supervisor
+Научный руководитель: \\ \@supervisor
 \end{minipage}}
 
 
 
 \vfill
 
-\centerline{РњРёРЅСЃРє, \the\year}
+\centerline{Минск, \the\year}
 \end{titlepage}
 \setcounter{page}{2}
 }
