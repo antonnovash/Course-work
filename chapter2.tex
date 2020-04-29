@@ -80,7 +80,7 @@ $$ u(t)\in U, \quad  t\in [0, T].
 Здесь $x(t) \in \mathbb{R}^n$ — состояние, $u(t) \in R^r$ — управление, $A \in \mathbb{R}^{n\times n}, B \in \mathbb{R}^{n\times r}, H \in \mathbb{R}^{n\times p}, G\in \mathbb{R}^{m\times r},$ — заданные матрицы; $U \subset \mathbb{R}^r$.
 
 Задача (\ref{2.5}) обобщает задачу (\ref{2.4}) для которой:
-$$A = E, B = B - A, H = -E, G = A, g = 0$$.
+$$A = 0, B = B - A, H = -E, G = A, g = 0$$.
 
 Будем считать, что для целей управления доступны полные и точные измерения состояний, которые поступают в дискретные моменты времени $\tau \in \Delta = {0, h, ..., T - h},$ где $h = T/N$ — период квантования. Траекторию измерений в конкретном процессе управления будем обозначать $x^*(\tau), \tau \in \Delta;$ она зависит от $u^*(\cdot)$ выбранного управления.
 
@@ -88,7 +88,7 @@ $$A = E, B = B - A, H = -E, G = A, g = 0$$.
 Для решения задачи (\ref{2.5}) сведём ее к задаче линейного программирования с помощью формулы Коши для линейной системы.
 
 \begin{equation} \label{2.6}
-x(T) = F(T,0)x_0 + \int_{0}^{T} F(T,t)B(t)u(t) dt ,
+x(t) = F(t,0)x_0 + \int_{0}^{t} F(T,\theta)B(\theta)u(\theta) dt ,
 \end{equation}
 где $F(T,t)$ --- фундаментальная матрица, т.е. решение уравнения
 $$
@@ -96,18 +96,19 @@ $$
     $$
 Интеграл в правой часть равенства (\ref{2.6}) запишем следующим образом:
 \begin{equation} \label{2.7}
-x(T) = F(T,0)x_0 +  \sum_{s=0}^{T-h}\int_{s}^{s+h} F(T,t)B(t)\,dt \  u(s).
+x(t) = F(t,0)x_0 +  \sum_{s\in T_h}^{t-h}\int_{s}^{s+h} F(t,\theta)B(\theta)\,d\theta \  u(s).
 \end{equation}
+где $T_h(t) = \{0, h, ..., t-h\}$
 
 Используя (\ref{2.7}) запишем левую часть терминального ограничения:
 
 \begin{equation} \label{2.8}
-Hx(T) + Gu(T) = HF(T,0)x_0 + \sum_{s=0}^{T-h}\int_{s}^{s+h} HF(T,t)B(t)\,dt\ u(s) + G\sum_{s=0}^{T-h}u(s).
+Hx(t) + Gu(t) = HF(t,0)x_0 + \sum_{s \in T_h}^{t-h}\int_{s}^{s+h} HF(t,\theta)B(\theta)\,d\theta \ u(s) + Gu(t).
 \end{equation}
 
 Равенство  (\ref{2.8}) перепишем в следующем виде:
 $$
-    Hx(T) + Gu(T)= \Phi(0)x_0 +  \sum_{s=0}^{T-h}(D(s) + G)u(s).
+    Hx(t) + Gu(t)= \Phi(t)x_0 +  \sum_{s \in T_h}^{t-h}D(s)u(s) + Gu(t)
     $$
 где введены следующие обозначения:
 $$
@@ -121,19 +122,54 @@ $$
 \begin{equation} \label{2.9}
 \sum_{t = 0}^{T - h}c'(t)u(t) \to \min,
 \end{equation}
-$$ \sum_{s = 0}^{T - h}(D(s)+G)u(s) \leq g^*,$$
+$$ \sum_{s \in T_h}^{t-h}D(s)u(s) + Gu(t) \leq g^*,$$
 $$
     u_*\leq u(t) \leq u^*,\quad t \in [0, T - h],
 $$
 где
 $$
-    c'(t) = \int_{s}^{s+h} F(T,t)B(t)\,dt,\quad s\in [0, T - h],
+    c'(t) = \int_{s}^{s+h} F(t,0)B(t)\,dt,\quad s\in [0, T - h],
     $$
 $$
-    g^* = g - \Phi(0)x_0,
+    g^*(t) = g - \Phi(t)x_0.
     $$
 
+Таким образом,для решения задачи ЛП получим следующие данные:
+\begin{equation*}
+  A_lp = \left(
+\begin{array}{ccccc}
+  G & 0 & 0 & \ldots & 0 \\
+  D(0) & G & 0 & \ldots & 0 \\
+  D(0) & D(h) & G & \ldots & 0 \\
+  \vdots & \vdots & \vdots & \ddots & \vdots \\
+  D(0) & D(h) & \ldots & D(T - h) & G
+\end{array}
+\right)
+\end{equation*}
 
+\begin{equation*}
+  u_lp = \left(
+\begin{array}{c}
+  u(0) \\
+  u(h) \\
+  u(2h) \\
+  \vdots \\
+  u(T-h)
+\end{array}
+\right)
+\end{equation*}
+
+\begin{equation*}
+  b_lp = \left(
+\begin{array}{c}
+  g - \Phi(0)x_0 \\
+  g - \Phi(h)x_0 \\
+  g - \Phi(2h)x_0 \\
+  \vdots \\
+  g - \Phi(T - h)x_0 
+\end{array}
+\right)
+\end{equation*}
 
 \section{}\label{1sec:discussion}
 При сделанном предположении определим понятие (дискретной) оптимальной обратной связи в задаче (\ref{2.4}).
@@ -164,14 +200,14 @@ $$
 \sum_{t = \tau}^{T - h}c'(t)u(t) \to \min,
 \end{equation}
 $$
- \sum_{s = \tau}^{T - h}(D(s)+G)u(s) \leq g^*,
+ \sum_{s = \tau}^{t-h}D(s)u(s) + Gu(t) \leq g^*,
     $$
 $$
     u_*\leq u(t) \leq u^*,\quad t \in [\tau, T],
     $$
 где
 $$
-    c'(t) = \int_{s}^{s+h} F(T,t)B(t)\,dt,\quad s\in [\tau, T - h],
+    c'(t) = \int_{s}^{s+h} F(t,0)B(t)\,dt,\quad s\in [\tau, T - h],
     $$
 $$
     g^* = g - \Phi(\tau)z,
