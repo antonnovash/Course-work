@@ -38,12 +38,16 @@ function [X, U] = Solve(r,z,s)% пока только для позиции (0,x_0) т.к не исправлял
     u = linprog(-c_lp, A_lp, b_lp,[],[],lb);
     U = reshape(u,[s.n,s.N]);
     X = [];
-    count = 1;
-    for t = r:s.h:s.T-s.h
-        f = quadv(@(x)FundMatrix(s.A, t - x) * s.B * U(:,count), r, t);
-        X_Solve = FundMatrix(s.A,t - r)*z + f;
-        X = [X X_Solve];
+    for t = 0:s.h:s.T-s.h
+        count = 1;  
+        f_res = zeros(s.n,1);
+        for q = s.h:s.h:t
+        f = quadv(@(x)FundMatrix(s.A, t - x) * s.B, q, q + s.h)* U(:,count);
         count = count + 1;
+        f_res = f_res + f;
+        end
+        X_Solve = FundMatrix(s.A,t - r)*z + f_res;
+        X = [X X_Solve];
     end
 end
 
