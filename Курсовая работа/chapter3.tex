@@ -1,0 +1,163 @@
+\chapter{РЕЗУЛЬТАТЫ ЧИСЛЕННЫХ ЭКСПЕ\-РИ\-МЕН\-ТОВ}\label{chap3}
+ Описанный метод нахождения позиционного решения и реализацию оптимальной обратной связи в режиме реального времени продемонстрируем на примере задачи оптимального управления для модели расширяющейся экономики фон Неймана:
+ \begin{equation} \label{3.1}
+    J(u) = c'x(T)\to \max,
+\end{equation}
+$$
+    \dot{x}=(B - A)u,\quad x(0) = x_0,
+    $$
+$$
+    Au(t)\leq x(t),
+    $$
+$$
+    u(t)\geq 0, \quad  t\in [0, T].
+    $$
+Параметрам задачи присвоим следующие значения:
+$$ T = 3, x_0 = (15, 1), c_0 = (5, 2),$$
+\begin{equation*}
+  A = \left(
+\begin{array}{cc}
+  3 & 1 \\
+  1 & 2
+\end{array}
+\right)
+\quad
+ B = \left(
+\begin{array}{cc}
+  2 & 4 \\
+  3 & 1
+\end{array}
+\right).
+\end{equation*}
+
+\section{Программная реализация}\label{1sec:centr_control}
+
+Определим функцию CreateLp, где матрица условий, вектор затрат и вектор стоимости вычисляются следующим образом:
+\begin{verbatim}
+function [A_lp, b_lp, c_lp] = CreateLp(s,r,z)
+    A_lp = [];
+    b_lp = [];
+    c_lp = [];
+    for t = r:s.h:s.T-s.h
+        c_lp = [c_lp s.c_0 * quadv(@(tt)FundMatrix(s.A, s.T - tt)*s.B,...
+        t, t + s.h)];
+        b_lp = [b_lp; s.g - s.H*FundMatrix(s.A,t)*z];
+        D = [];
+        for q = r+s.h:s.h:t
+            D_s = quadv(@(x) s.H*FundMatrix(s.A, t - x)*s.B,...
+            q, q + s.h);
+            D = [D D_s];
+        end
+        D = [D s.G];
+        A_lp = [A_lp zeros(size(A_lp,1),s.r)];
+        A_lp = [A_lp;D];
+    end
+end
+\end{verbatim}
+
+Здесь $s$ — структура с исходными данными задачи, $(r, z)$ — позиция, для которой строится задача ЛП.
+
+Для решения задачи (\ref{3.1}) определим в общем виде функцию Solve, чтобы иметь возможность ее повторного использования для различных подходов к решению.
+\begin{verbatim}
+function [X, U] = Solve(s,r,z)
+    [A_lp, b_lp, c_lp] = CreateLp(s,r,z);
+    lb = zeros(size(b_lp));
+    u = linprog(-c_lp, A_lp, b_lp,[],[],lb);
+    U = reshape(u,[s.n,length(A_lp)/2]);
+    X = [];
+    for t = r:s.h:s.T-s.h
+        count = 1;
+        f_res = zeros(s.n,1);
+        for q = r+s.h:s.h:t
+        f = quadv(@(x)FundMatrix(s.A, t - x) * s.B,...
+         q, q + s.h)* U(:,count);
+        count = count + 1;
+        f_res = f_res + f;
+        end
+        if(r == 0)
+        X_Solve = FundMatrix(s.A,t - r)*z + f_res;
+        else
+        w = -0.1*U(:,count);
+        X_Solve = FundMatrix(s.A,t - r)*z + f_res +...
+        quadv(@(x)FundMatrix(s.A,r - x) * s.M * w, r, r + s.h);
+        end
+        X = [X X_Solve];
+    end
+end
+\end{verbatim}
+Для расчёта значения фундаментальной матрицы определим функцию FundMatrix, которая имеет следующий вид:
+\begin{verbatim}
+function F = FundMatrix(A,t)
+    F = expm(A*t);
+\end{verbatim}
+
+Программное решения задачи (\ref{3.1}) вычисляется с помощью следующей команды:
+\begin{verbatim}
+[X, U] = Solve(s,0,s.x_0);
+\end{verbatim}
+
+При построение обратной связи состояние объекта описывается уравнением с возмущением $w(t) = M + w^*$, где:
+\begin{equation*}
+ w^* = -0.1u(t),
+ \quad
+ M = \left(
+\begin{array}{cc}
+  0.5 & 0 \\
+  0 & 0.3
+\end{array}
+\right).
+\end{equation*}
+
+Позиционное решение задачи (\ref{3.1}) вычисляется с помощью следующих команд:
+\begin{verbatim}
+X_sol = [];
+U_sol = [];
+z = s.x_0;
+for r=0:s.h:s.T-s.h
+    [X_p, U_p] = Solve(s,r,z);
+    X_sol = [X_sol X_p(:,1)];
+    U_sol = [U_sol U_p(:,1)];
+    [a,b] = size(X_p);
+    if(b > 1)
+    z = X_p(:,2);
+    end
+end
+\end{verbatim}
+
+\section{Сравнение программного и позиционного решения}
+
+Сравним результаты для программного и позиционного решения.
+Во всех численных экспериментах были найдены решения для моментов времени $t = [0, T]$ c шагом $h = T/N$, где $N = 100$.
+
+\begin{figure}[p]
+
+\includegraphics[width=\linewidth]{image3.jpg}
+
+\caption{Сравнение}
+
+\label{fig:mpr3}
+
+\end{figure}
+
+\begin{figure}
+
+\includegraphics[width=\linewidth]{image4.jpg}
+
+\caption{Сравнение}
+
+\label{fig:mpr4}
+
+\end{figure}
+
+На рисунке \ref{fig:mpr3} представлено сравнение состояний объекта для программного и позиционного решения, где черным цветом изображено программное решение, а красным цветом позиционное решение.
+
+На рисунке \ref{fig:mpr4} представлено сравнение программного и позиционного решения, а так же состояний объекта для программного и позиционного решения в зависимости от времени.
+
+Сравним значения критерия качества для обоих видов решения.
+
+Для программного решения: $J(u^0) = 166.8597030$.
+
+Для позиционного решения: $J(u^0) = 162.6487067$.
+
+
+В настоящей главе были рассмотрены два подхода к решению задачи оптимального управления для модели расширяющейся экономики фон Неймана. С помощью результатов численных экспериментов были получены графики сравнения состояний объектов для программного и позиционного решения, а так же графики сравнение программного и позиционного управления, состояний объекта для программного и позиционного решения в зависимости от времени. 
